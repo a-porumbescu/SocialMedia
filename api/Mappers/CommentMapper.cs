@@ -10,10 +10,20 @@ public static class CommentMapper
         return new CommentDto
         {
             CommentId = commentModel.CommentId,
-            Text = commentModel.Text,
+            Title = commentModel.Text,
             Content = commentModel.Content,
             CreatedOn = commentModel.CreatedOn,
             StockId = commentModel.StockId
+        };
+    }
+    
+    public static Comment ToCommentFromCreate(this CreateCommentDto commentDto, int stockId)
+    {
+        return new Comment
+        {
+            Text = commentDto.Title,
+            Content = commentDto.Content,
+            StockId = stockId
         };
     }
 }

@@ -31,6 +31,7 @@ public class StockController : ControllerBase
         
         var stocks = await _stockRepository.GetAllAsync(query);
         var stockDto = stocks.Select(s => s.ToStockDto());
+        
         return Ok(stocks);
     }
 
@@ -48,6 +49,7 @@ public class StockController : ControllerBase
         {
             return NotFound();
         }
+        
         return Ok(stock.ToStockDto());
     }
     
@@ -61,6 +63,7 @@ public class StockController : ControllerBase
         
         var stockModel = stockDto.ToStockFromCreateDto();
         await _stockRepository.CreateAsync(stockModel);
+        
         return CreatedAtAction(nameof(GetById), new { id = stockModel.StockId }, stockModel);
     }
 

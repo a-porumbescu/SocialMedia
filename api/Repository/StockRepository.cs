@@ -19,8 +19,7 @@ public class StockRepository : IStockRepository
     public async Task<List<Stock>> GetAllAsync(QueryObject query)
     {
         IQueryable<Stock> stocks = _context.Stocks.Include(c => c.Comments);
-
-
+        
         if (!string.IsNullOrWhiteSpace(query.CompanyName))
         {
             stocks = stocks.Where(s => s.CompanyName.Contains(query.CompanyName));
@@ -41,7 +40,6 @@ public class StockRepository : IStockRepository
         
         var skipNumber = (query.PageNumber - 1) * query.PageSize;
         
-
         return await stocks.Skip(skipNumber).Take(query.PageSize).ToListAsync();
     }
 
@@ -54,6 +52,7 @@ public class StockRepository : IStockRepository
     {
         await _context.Stocks.AddAsync(stockModel);
         await _context.SaveChangesAsync();
+        
         return stockModel;
     }
 
@@ -88,6 +87,7 @@ public class StockRepository : IStockRepository
         
         _context.Stocks.Remove(stockModel);
         await _context.SaveChangesAsync();
+        
         return stockModel;
     }
 

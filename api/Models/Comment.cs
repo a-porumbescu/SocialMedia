@@ -7,7 +7,5 @@ public class Comment
     public string Content { get; set; } = string.Empty;
     public DateTime CreatedOn { get; set; } = DateTime.Now.ToUniversalTime();
     public int? StockId { get; set; }
-    
-    //Navigation property
     public Stock? Stock { get; set; }
 }

@@ -28,6 +28,7 @@ public class CommentRepository : ICommentRepository
     {
         await _context.Comments.AddAsync(commentModel);
         await _context.SaveChangesAsync();
+        
         return commentModel;
     }
 

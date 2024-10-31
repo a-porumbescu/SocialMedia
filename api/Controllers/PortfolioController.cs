@@ -2,6 +2,7 @@
 using api.Extensions;
 using api.Interfaces;
 using api.Models;
+using api.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -32,5 +33,37 @@ public class PortfolioController : ControllerBase
         var appUser = await _userManager.FindByNameAsync(userName);
         var userPortfolio = await _portfolioRepository.GetUserPortfolio(appUser);
         return Ok(userPortfolio);
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> AddUserPortfolio(string symbol)
+    {
+        var userName = User.GetUserName();
+        var appUser = await _userManager.FindByNameAsync(userName);
+        var stock = await _stockRepository.GetBySymbolAsync(symbol);
+
+        if (stock == null) return BadRequest("Stock not found");
+        
+        var userPortfolio = await _portfolioRepository.GetUserPortfolio(appUser);
+
+        if (userPortfolio.Any(e => e.Symbol.ToLower() == symbol.ToLower())) return BadRequest("Cannot add same stock to portfolio");
+
+        var portfolioModel = new Portfolio
+        {
+            StockId = stock.StockId,
+            AppUserId = appUser.Id
+        };
+        
+        await _portfolioRepository.CreateAsync(portfolioModel);
+
+        if (portfolioModel == null)
+        {
+            return StatusCode(500, "Portfolio could not be created");
+        }
+        else
+        {
+            return Created();
+        }
     }
 }

@@ -13,6 +13,7 @@ public static class CommentMapper
             Title = commentModel.Text,
             Content = commentModel.Content,
             CreatedOn = commentModel.CreatedOn,
+            CreatedBy = commentModel.AppUser.UserName,
             StockId = commentModel.StockId
         };
     }

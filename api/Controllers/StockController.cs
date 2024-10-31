@@ -32,7 +32,7 @@ public class StockController : ControllerBase
         }
         
         var stocks = await _stockRepository.GetAllAsync(query);
-        var stockDto = stocks.Select(s => s.ToStockDto());
+        var stockDto = stocks.Select(s => s.ToStockDto()).ToList();
         
         return Ok(stocks);
     }

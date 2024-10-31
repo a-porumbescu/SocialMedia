@@ -66,11 +66,11 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultAuthenticateScheme = 
-    options.DefaultChallengeScheme = 
-    options.DefaultScheme = 
-    options.DefaultForbidScheme = 
-    options.DefaultSignInScheme = 
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
@@ -88,6 +88,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IStockRepository, StockRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
 
 var app = builder.Build();
 
@@ -100,6 +101,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
-app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.Run();
